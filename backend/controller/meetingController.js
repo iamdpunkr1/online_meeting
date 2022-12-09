@@ -49,7 +49,8 @@ const createMeeting=async(req,res)=>{
               if (err) throw err;
               // if no error, file has been deleted successfully
               console.log('File deleted!');//program ends here
-              res.status(200).json(mapObj)
+              // res.status(200).json(mapObj)
+              // res.status(200).json(meeting)
           });
         }
       });
@@ -91,9 +92,19 @@ const createMeeting=async(req,res)=>{
        
 }
 
+const getMeetings = async(req, res) => {
+ const user_id = req.user._id
+ try{
+   const meetings = await Meeting.find({user_id}).sort({createdAt: -1})
+   res.status(200).json(meetings)
+ }catch(error){
+    res.status(400).json({error:error.message})
+ }
+}
 
 module.exports={
-    createMeeting
+    createMeeting,
+    getMeetings
 }
 
 
