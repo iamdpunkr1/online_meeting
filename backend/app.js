@@ -1,13 +1,23 @@
 const express =  require('express')
 require('dotenv').config()
-
-const {createMeeting} =  require('./controllers/meetingController')
+const mongoose = require('mongoose')
+// const {loginUser, signupUser} = require('../controller/userController')
+const userRoutes = require('./routes/user')
+const meetingRoutes = require('./routes/meetingRoutes')
 
 const app = express()
 
 app.use(express.json())
 
-app.post('/',createMeeting)
-app.listen(process.env.PORT, ()=>{console.log("Server Running on http://localhost:5000")})
+app.use('/',userRoutes)
+app.use('/',meetingRoutes)
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(()=>{
+        app.listen(process.env.PORT,()=>{
+            console.log('connected to db and listening to port: ', process.env.PORT)
+        })
+    }).catch(err=>console.log(err))
+
 
 
