@@ -1,10 +1,11 @@
 import Dropdown from 'react-bootstrap/Dropdown';
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 const Draft = () => {
     const {user} = useAuthContext()
     const [meetings, setMeetings] = useState(null)
-    const [meetDetails, setMeetDetails] = useState(null)
+    // const [meetDetails, setMeetDetails] = useState(null)
     
     useEffect(()=>{
         const fetchMeetings = async () => {
@@ -27,12 +28,12 @@ const Draft = () => {
           }
     },[setMeetings,user])
 
-    const handleClick = (mid) =>{
-        const meet = meetings.filter(m=>m.meet_id===mid)
-        console.log(meet)
-        setMeetDetails(meet)
-        console.log(meetDetails)
-    }
+    // const handleClick = (mid) =>{
+    //     const meet = meetings.filter(m=>m.meet_id===mid)
+    //     setMeetDetails(meet)
+    //     console.log(meet)
+    //     console.log(meetDetails)
+    // }
 
     return ( 
        <div className="App">
@@ -43,7 +44,7 @@ const Draft = () => {
                 </Dropdown.Toggle>
             
                 <Dropdown.Menu>
-                    {meetings && meetings.map(meeting=> <Dropdown.Item onClick={()=>handleClick(meeting.meet_id)}>Meet_ID: {meeting.meet_id}</Dropdown.Item>
+                    {meetings && meetings.map(meeting=> <Dropdown.Item ><Link to={meeting.meet_id}>Meet_ID: {meeting.meet_id}</Link></Dropdown.Item>
                     )}
               </Dropdown.Menu>
             </Dropdown>

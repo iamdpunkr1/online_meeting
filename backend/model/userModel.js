@@ -5,6 +5,11 @@ const validator = require('validator')
 const Schema = mongoose.Schema
 
 const userSchema= new Schema({
+    
+    username:{
+        type: String,
+        required: true
+    },
     email:{
         type: String,
         required:true,
@@ -17,13 +22,17 @@ const userSchema= new Schema({
     },
     appPass:{
         type: String,
-        required: true
+        unique:true
+    },
+    user_type:{
+        type:String,
+        required:true
     }
 })
 
-// static SignUP method
-userSchema.statics.signup=async function(email, password, appPass){
-    if(!email || !password || !appPass){
+// static Admin SignUP method
+userSchema.statics.signupAdmin=async function(username, email, password, appPass, user_type){
+    if(!username || !email || !password || !appPass|| !user_type){
         throw Error("All fields must be filled")
     }
 
@@ -31,13 +40,6 @@ userSchema.statics.signup=async function(email, password, appPass){
         throw Error("Email is not valid")
     }
 
-    // if(!validator.isStrongPassword(password)){
-    //     throw Error("Password is not Strong")
-    // }
-
-    // if(!validator.isAlpha(appPass,['en-US'], {'ignore': ' _-'})){
-    //     throw Error("Name must contain only alphabets")
-    // }
 
     const exists = await this.findOne({email})
 
@@ -47,7 +49,32 @@ userSchema.statics.signup=async function(email, password, appPass){
 
     const salt= await bcrypt.genSalt(10)
     const hash= await bcrypt.hash(password, salt)
-    const user= await this.create({email, password:hash, appPass}) 
+    const user= await this.create({username, email, password:hash, appPass, user_type}) 
+
+    return user
+
+}
+
+// static Admin SignUP method
+userSchema.statics.signupUser=async function(username, email, password, user_type){
+    if(!username || !email || !password || !user_type){
+        throw Error("All fields must be filled")
+    }
+
+    if(!validator.isEmail(email)){
+        throw Error("Email is not valid")
+    }
+
+
+    const exists = await this.findOne({email})
+
+    if(exists){
+        throw Error("Email already in use")
+    }
+
+    const salt= await bcrypt.genSalt(10)
+    const hash= await bcrypt.hash(password, salt)
+    const user= await this.create({username, email, password:hash, user_type}) 
 
     return user
 

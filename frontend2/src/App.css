@@ -136,3 +136,12 @@
   color: #ffeba7 !important;
   box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
 }
+
+div.error {
+  padding: 10px;
+  /* background: #ffefef; */
+  border: 1px solid red;
+  color: red;
+  border-radius: 4px;
+  margin: 20px 0;
+}

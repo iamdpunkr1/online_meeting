@@ -4,22 +4,38 @@ import { useState } from 'react';
 import { useSignup } from '../hooks/useSignup';
 
 const Signup = () => {
+  const user_type="admin"
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [appPass, setappPass] = useState('')
+  const [username, setUserName] = useState('')
   const {signup, error, isLoading} = useSignup()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await signup(email,password,appPass)
+    await signup(username,email,password,appPass,user_type)
   }
 
     return (
       <div className="form-box">
       <form className="center-wrap" onSubmit={handleSubmit}>
               <div className="section text-center">
-              <h4 className="mb-4 pb-3">Sign Up</h4>
-              <div className="form-group ">
+              <h4 className="mb-4 pb-3">Admin Sign Up</h4>
+              <div className="form-group">
+                <input
+                    type="text"
+                    name="username"
+                    className="form-style"
+                    placeholder="Your Full Name"
+                    id="username"
+                    autoComplete="off"
+                    value={username}
+                    onChange={(e)=>{setUserName(e.target.value)}}
+                    required
+                />
+                <Unicons.UilUser className="input-icon uil uil-at"  />
+                </div>
+              <div className="form-group  mt-2">
                 <input
                   type="email"
                   name="email"

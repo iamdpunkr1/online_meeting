@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Toast from 'react-bootstrap/Toast';
 import {  useNavigate} from 'react-router-dom';
@@ -9,31 +11,31 @@ const Meeting = () => {
     let today = new Date()
     let currDate = today.getFullYear() + '-' + parseInt(today.getMonth() + 1) + '-' + today.getDate();
     var currentTime = today.getHours()+":"+today.getMinutes()+":"+ today.getSeconds();
-    // let mapObj={
-    // '{{meeting_id}}': meet_id,
-    // '{{topic}}':"Exam cancellation",
-    // '{{date}}': currDate,
-    // '{{time}}':currentTime,
-    // '{{location}}':"Gauhati"
-    // } 
+
     const [disabled, setDisabled]=useState(false);
     const [meetings, setMeetings] = useState([]);
     const [date, setDate] = useState(currDate);
     const [topic, setTopic] = useState("");
     const [location, setLocation] = useState("");
     const [time, setTime] = useState(currentTime);
+    const [agenda, setAgenda] = useState("");
+    const [error, setError] = useState(null)
     const navigate=useNavigate()
 
 
     const createMeeting= async(e)=>{
         e.preventDefault()
+        if (!user) {
+          setError('You must be logged in')
+          return
+        }
         setDisabled(true)
         let meet_id= (Math.random() + 1).toString(36).substring(2);
         let temp = meetings
-        temp.push({meet_id,topic,location,date, time})
+        temp.push({meet_id, agenda, topic,location,date, time})
 
 
-        const meeting = {meet_id,topic,location,date, time}
+        const meeting = {meet_id, agenda, topic, location, date, time}
 
         const response = await fetch('/dashboard', {
           method: 'POST',
@@ -68,6 +70,7 @@ const Meeting = () => {
 
     return ( 
         <div className='App'>
+        {error && <div className="error">{error}</div>}
 
           <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
           <Toast.Header>
@@ -84,7 +87,20 @@ const Meeting = () => {
 
       <div className='form-box'>
       <form className="center-wrap" onSubmit={createMeeting}>
-      <h3>Create a Meeting</h3>
+      <h3 className='mb-3'>Create a Meeting</h3>
+      <div className="form-group ">
+      <input
+          type="text"
+          name="Agenda"
+          onChange={(e)=>{setAgenda(e.target.value)}}
+          value={agenda}
+          className="form-style"
+          placeholder="Agenda"
+          id="agenda"
+          autoComplete="off"
+      />
+    </div>
+
       <div className="form-group mt-4">
           <input
           type="text"
@@ -111,7 +127,15 @@ const Meeting = () => {
           />
       </div>
 
-      
+      <Row>
+      <Col>
+
+      </Col>
+
+      <Col>
+
+      </Col>
+  </Row>
       <div className="form-group mt-3">
       <input
         type="date"

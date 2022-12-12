@@ -5,6 +5,10 @@ const  meetingSchema = new mongoose.Schema(
       type: String,
       required:true
     },
+    agenda: {
+      type: String,
+      required: true,
+    },
    topic: {
       type: String,
       required: true,
@@ -24,6 +28,8 @@ const  meetingSchema = new mongoose.Schema(
     draft:{
       type:String,
     },
+    feedbacks:[]
+    ,
     user_id:{
       type:String,
       required: true

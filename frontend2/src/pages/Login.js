@@ -52,7 +52,7 @@ const Login = () => {
               </button>
               {error && <div className="error">{error}</div>}
               <p className="mb-0 mt-4 text-center">
-              Create a account? <Link to="/signup">Signup</Link>
+              Create a account? <Link to="/signupAdmin">Admin</Link> <Link to="/signupUser">User</Link>
               </p>
             </div>
         </form>

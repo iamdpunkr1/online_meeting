@@ -8,6 +8,10 @@ const meetingRoutes = require('./routes/meetingRoutes')
 const app = express()
 
 app.use(express.json())
+app.use((req, res, next)=>{
+    console.log(req.method, req.path)
+    next()
+})
 
 app.use('/',userRoutes)
 app.use('/',meetingRoutes)
